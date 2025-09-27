@@ -1,0 +1,29 @@
+# Q7. Decision Tree Classifier on Iris dataset
+
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+import pandas as pd
+
+# 1. Load the Iris dataset
+iris = load_iris()
+X, y = iris.data, iris.target
+
+# 2. Train-test split (80% train, 20% test)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+
+# 3. Train Decision Trees with depths 1, 2, 3 and store results
+results_df = pd.DataFrame([
+    {
+        "Max Depth": depth,
+        "Train Accuracy": accuracy_score(y_train, DecisionTreeClassifier(max_depth=depth, random_state=42).fit(X_train, y_train).predict(X_train)),
+        "Test Accuracy": accuracy_score(y_test, DecisionTreeClassifier(max_depth=depth, random_state=42).fit(X_train, y_train).predict(X_test))
+    }
+    for depth in [1, 2, 3]
+])
+
+# Display results
+print(results_df)
